@@ -1,3 +1,3 @@
 export const appConfig = {
-    db: "loc"
-}
+  issuer: 'strecku.festu.se',
+};
