@@ -1,3 +1,3 @@
-export type LoginResult = {
+export class LoginResult {
   access_token: string;
-};
+}

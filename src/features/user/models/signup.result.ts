@@ -1,8 +1,8 @@
-import { User } from '../../../database/entities/user.entity';
+import { UserDto } from './user.dto';
 
-export type SignupResult = {
-  user: User;
+export class SignupResult {
+  user: UserDto;
   auth: {
     access_token: string;
   };
-};
+}
