@@ -2,12 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthModule } from './auth.module';
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
-import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
+import { getConnectionToken } from '@nestjs/mongoose';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import mongoose, { Connection } from 'mongoose';
 import { UserDocument, UserSchema } from '../../database/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { testConfig } from '../../../config/testConfig';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth.guard';
+import { globalImports } from '../../../test/test.helpers';
 
 describe('AuthController', () => {
   let app: INestApplication | undefined;
@@ -26,9 +29,12 @@ describe('AuthController', () => {
 
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
-      imports: [
-        MongooseModule.forRoot(testConfig.db, { dbName: testConfig.dbName }),
-        AuthModule,
+      imports: [...globalImports, AuthModule],
+      providers: [
+        {
+          provide: APP_GUARD,
+          useClass: AuthGuard,
+        },
       ],
     }).compile();
     await mongoose.connect(testConfig.db, { dbName: testConfig.dbName });
