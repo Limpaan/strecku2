@@ -5,16 +5,16 @@ import { appSecrets } from '../config/appSecrets';
 import { AuthModule } from './features/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthGuard } from './features/auth/auth.guard';
-import { APP_GUARD, Reflector } from '@nestjs/core';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     JwtModule.register({
+      global: true,
       secret: appSecrets.secret,
       signOptions: { expiresIn: '8h' },
     }),
     MongooseModule.forRoot(appSecrets.db),
-    Reflector,
     UserModule,
     AuthModule,
   ],

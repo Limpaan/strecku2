@@ -2,14 +2,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User, UserDocument } from '../../database/entities/user.entity';
 import { Model } from 'mongoose';
-import { SignupRequest } from './models/signup.reqest';
+import { SignupRequest } from './models/signup.request';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async signup(signupRequest: SignupRequest): Promise<User> {
+  async signup(signupRequest: SignupRequest): Promise<UserDocument> {
     if (
       this.userModel.exists({
         email: { $regex: new RegExp(signupRequest.email, 'i') },

@@ -8,11 +8,12 @@ import {
   Res,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { SignupRequest } from './models/signup.reqest';
+import { SignupRequest } from './models/signup.request';
 import { Response } from 'express';
 import { SignupResult } from './models/signup.result';
 import { UserService } from './user.service';
 import { AuthService } from '../auth/auth.service';
+import { Public } from '../auth/public.guard';
 
 @Controller('/api/v1/user')
 export class UserController {
@@ -22,16 +23,21 @@ export class UserController {
     private jwtService: JwtService,
   ) {}
 
-  @Post('/signup')
+  @Public()
+  @Post('signup')
   async Signup(
     @Res() response: Response<SignupResult>,
     @Body() signupRequest: SignupRequest,
   ) {
     const newUser = await this.userService.signup(signupRequest);
     const token = await this.authService.login(signupRequest, this.jwtService);
-    return response
-      .status(HttpStatus.CREATED)
-      .json({ user: newUser, auth: token });
+    return response.status(HttpStatus.CREATED).json({
+      user: {
+        ...newUser,
+        id: newUser._id,
+      },
+      auth: token,
+    });
   }
 
   @Get(':id')

@@ -5,6 +5,7 @@ import { LoginRequest } from './models/login.request';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { Public } from './public.guard';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -15,6 +16,7 @@ export class AuthController {
 
   @Public()
   @Post('login')
+  @ApiResponse({ type: LoginResult, status: 200 })
   async Login(
     @Res() response: Response<LoginResult>,
     @Body() user: LoginRequest,
