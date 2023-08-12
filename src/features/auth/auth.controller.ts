@@ -4,18 +4,19 @@ import { LoginResult } from './models/login.result';
 import { LoginRequest } from './models/login.request';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { Public } from './public.guard';
-import { ApiResponse } from '@nestjs/swagger';
+import { PublicRoute } from './public.route.attribute';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('api/v1/auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private jwtService: JwtService,
   ) {}
 
-  @Public()
   @Post('login')
+  @PublicRoute()
   @ApiResponse({ type: LoginResult, status: 200 })
   async Login(
     @Res() response: Response<LoginResult>,

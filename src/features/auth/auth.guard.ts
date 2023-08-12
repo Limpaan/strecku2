@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { appSecrets } from '../../../config/appSecrets';
-import { IS_PUBLIC_KEY } from './public.guard';
+import { IS_PUBLIC_KEY } from './public.route.attribute';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
