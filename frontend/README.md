@@ -8,7 +8,7 @@ The frontend for the StreckU app. Use together with the backend found in the sam
 4. Run `npm start` to start the app
 
 ## Development
-The frontend is build on [React](https://react.dev/) and [Typescript](https://www.typescriptlang.org/)
+The frontend is build on [React](https://react.dev/) and [Typescript](https://www.typescriptlang.org/). Using [Material UI](https://mui.com/) for styling.
 
 ### Generate backend types
 The frontend can automatically generate the types from the backend to use.
