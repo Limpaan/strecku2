@@ -13,14 +13,18 @@ export class AuthService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async login(loginRequest: LoginRequest, jwtService: JwtService) {
+    const [email, password] = [loginRequest.email, loginRequest.password];
+
     const user = await this.userModel.findOne({
-      email: { $regex: new RegExp(loginRequest.email, 'i') },
+      email: email.toLowerCase(),
     });
+
+    console.log(password);
 
     if (user) {
       const { passwordhash } = user;
-      if (await bcrypt.compare(loginRequest.password, passwordhash)) {
-        const payload = { email: loginRequest.email, sub: user._id };
+      if (await bcrypt.compare(password, passwordhash)) {
+        const payload = { email: email, sub: user._id };
         return {
           access_token: jwtService.sign(payload, {
             secret: appSecrets.secret,

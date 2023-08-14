@@ -5,7 +5,7 @@ import { LoginRequest } from './models/login.request';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { PublicRoute } from './public.route.attribute';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('api/v1/auth')
 @ApiTags('auth')
@@ -17,12 +17,19 @@ export class AuthController {
 
   @Post('login')
   @PublicRoute()
-  @ApiResponse({ type: LoginResult, status: 200 })
+  @ApiOkResponse({ type: LoginResult })
   async Login(
     @Res() response: Response<LoginResult>,
     @Body() user: LoginRequest,
   ) {
     const token = await this.authService.login(user, this.jwtService);
-    return response.status(HttpStatus.OK).json(token);
+    return response
+      .status(HttpStatus.OK)
+      .cookie('access_token', token.access_token, {
+        httpOnly: true,
+        secure: false,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+      })
+      .send();
   }
 }

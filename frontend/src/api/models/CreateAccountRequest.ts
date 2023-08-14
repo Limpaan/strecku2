@@ -3,6 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type SignupRequest = {
+export type CreateAccountRequest = {
     email: string;
+    name: string;
+    password: string;
+    token: string;
 };

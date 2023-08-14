@@ -2,6 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CreateAccountRequest } from '../models/CreateAccountRequest';
+import type { CreateAccountResult } from '../models/CreateAccountResult';
 import type { SignupRequest } from '../models/SignupRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -27,19 +29,19 @@ requestBody: SignupRequest,
     }
 
     /**
-     * @param id 
+     * @param requestBody 
+     * @returns CreateAccountResult 
      * @returns any 
      * @throws ApiError
      */
-    public static userControllerGetUser(
-id: number,
-): CancelablePromise<any> {
+    public static userControllerCreateAccount(
+requestBody: CreateAccountRequest,
+): CancelablePromise<CreateAccountResult | any> {
         return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/user/{id}',
-            path: {
-                'id': id,
-            },
+            method: 'POST',
+            url: '/api/v1/user/create-account',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

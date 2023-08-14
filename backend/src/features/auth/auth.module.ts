@@ -8,5 +8,6 @@ import { UserDefinition } from '../../database/entities/user.entity';
   imports: [MongooseModule.forFeature([UserDefinition])],
   controllers: [AuthController],
   providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
